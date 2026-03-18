@@ -1,0 +1,41 @@
+import { Card, Navbar, Shell } from '@/components/ui';
+import { passport, reviews } from '@/lib/mock-data';
+
+export default async function PassportPage({ params }) {
+  const { slug } = await params;
+  const profile = { ...passport, slug };
+
+  return (
+    <Shell>
+      <Navbar />
+      <div className="dashboard-grid">
+        <Card className="panel-pad">
+          <div className="badge success">Public Trust Passport</div>
+          <h1 style={{ marginBottom: 4 }}>{profile.full_name}</h1>
+          <p className="small">/{profile.slug}</p>
+          <div className="score-ring" style={{ '--score': profile.score }} data-score={profile.score} />
+          <p className="small">{profile.bio}</p>
+          <div className="form-grid">
+            <div className="badge success">Identity verified</div>
+            <div className="badge success">Income reviewed</div>
+            <div className="badge success">Sanctions / PEP clear</div>
+            <div className="badge neutral">{profile.reviews_count} verified reviews</div>
+          </div>
+        </Card>
+
+        <Card className="panel-pad">
+          <h2>Verified review history</h2>
+          <div className="form-grid">
+            {reviews.map((review, idx) => (
+              <div key={idx} className="card panel-pad">
+                <strong>{review.author}</strong>
+                <div className="small">Rating: {review.rating}/5</div>
+                <p className="small">{review.text}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </Shell>
+  );
+}
